@@ -25,13 +25,13 @@ data class Product(
     @SerializedName("official_store_id"   ) var officialStoreId    : String?               = null,
     @SerializedName("use_thumbnail_id"    ) var useThumbnailId     : Boolean?              = null,
     @SerializedName("accepts_mercadopago" ) var acceptsMercadopago : Boolean?              = null,
-    @SerializedName("variation_filters"   ) var variationFilters   : ArrayList<String>     = arrayListOf(),
+    @SerializedName("variation_filters"   ) var variationFilters   : List<String>     = listOf<String>(),
     @SerializedName("stop_time"           ) var stopTime           : String?               = null,
     @SerializedName("seller"              ) var seller             : Seller?               = Seller(),
-    @SerializedName("attributes"          ) var attributes         : ArrayList<ProductAttributes> = arrayListOf(),
+    @SerializedName("attributes"          ) var attributes         : List<ProductAttributes> = listOf<ProductAttributes>(),
     @SerializedName("winner_item_id"      ) var winnerItemId       : String?               = null,
     @SerializedName("catalog_listing"     ) var catalogListing     : Boolean?              = null,
     @SerializedName("discounts"           ) var discounts          : String?               = null,
-    @SerializedName("promotions"          ) var promotions         : ArrayList<String>     = arrayListOf(),
+    @SerializedName("promotions"          ) var promotions         : List<String>     = listOf<String>(),
     @SerializedName("inventory_id"        ) var inventoryId        : String?               = null
 )

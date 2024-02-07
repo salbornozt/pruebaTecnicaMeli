@@ -6,7 +6,7 @@ import com.satdev.pruebameli.feature_search_product.data.repository.dataSource.S
 import javax.inject.Inject
 
 class SearchProductDataSourceImpl @Inject constructor(private val apiService: ApiService) : SearchProductDataSource {
-    override suspend fun searchProduct(query:String): SearchProductResult {
+    override suspend fun searchProduct(query:String): SearchProductResult? {
         return apiService.searchProducts(query)
     }
 }
