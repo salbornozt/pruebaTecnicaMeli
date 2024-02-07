@@ -1,7 +1,7 @@
 package com.satdev.pruebameli.di
 
 import com.satdev.pruebameli.BASE_URL
-import com.satdev.pruebameli.data.api.ApiService
+import com.satdev.pruebameli.core.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
