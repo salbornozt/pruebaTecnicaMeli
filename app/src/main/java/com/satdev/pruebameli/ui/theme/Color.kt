@@ -2,11 +2,11 @@ package com.satdev.pruebameli.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val md_theme_light_primary = Color(0xFF6A5F00)
+val md_theme_light_primary = Color(0xFFFDE400)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFDE400)
 val md_theme_light_onPrimaryContainer = Color(0xFF201C00)
-val md_theme_light_secondary = Color(0xFF645F41)
+val md_theme_light_secondary = Color(0xFFFDE400)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
 val md_theme_light_secondaryContainer = Color(0xFFEBE3BD)
 val md_theme_light_onSecondaryContainer = Color(0xFF1F1C05)
@@ -23,7 +23,7 @@ val md_theme_light_onBackground = Color(0xFF1D1C16)
 val md_theme_light_surface = Color(0xFFFFFBFF)
 val md_theme_light_onSurface = Color(0xFF1D1C16)
 val md_theme_light_surfaceVariant = Color(0xFFE8E2D0)
-val md_theme_light_onSurfaceVariant = Color(0xFF4A4739)
+val md_theme_light_onSurfaceVariant = Color(0xFF000000)
 val md_theme_light_outline = Color(0xFF7B7768)
 val md_theme_light_inverseOnSurface = Color(0xFFF5F0E7)
 val md_theme_light_inverseSurface = Color(0xFF32302A)

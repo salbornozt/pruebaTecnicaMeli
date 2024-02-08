@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +20,8 @@ import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,11 +38,14 @@ fun SearchProductScreen(uiState: SearchProductUiState, onSearchProduct: () -> Un
         if (uiState.loadingState) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
+        Spacer(modifier = Modifier.height(16.dp))
         Row {
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.searchQuery,
                 onValueChange = onQuerySearch,
+                singleLine = true,
+                label = { Text("Buscar") },
                 trailingIcon = {
                     IconButton(onClick = onSearchProduct) {
                         Icon(
@@ -50,6 +57,9 @@ fun SearchProductScreen(uiState: SearchProductUiState, onSearchProduct: () -> Un
                 }
             )
         }
+        ProductList(uiState.productList) {
+
+        }
     }
 }
 
@@ -57,6 +67,8 @@ fun SearchProductScreen(uiState: SearchProductUiState, onSearchProduct: () -> Un
 @Composable
 fun SearchProductScreenPreview() {
     PruebaMeliTheme {
-        SearchProductScreen(uiState = SearchProductUiState(), onSearchProduct = {}, onQuerySearch = {})
+        Surface {
+            SearchProductScreen(uiState = SearchProductUiState(), onSearchProduct = {}, onQuerySearch = {})
+        }
     }
 }

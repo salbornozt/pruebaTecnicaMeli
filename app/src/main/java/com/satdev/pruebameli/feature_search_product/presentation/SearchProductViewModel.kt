@@ -6,21 +6,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.satdev.pruebameli.feature_search_product.data.model.Product
 import com.satdev.pruebameli.feature_search_product.domain.SearchProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchProductViewModel @Inject constructor(private val searchRepository: SearchProductRepository): ViewModel() {
+class SearchProductViewModel @Inject constructor(private val searchRepository: SearchProductRepository) :
+    ViewModel() {
     var uiState by mutableStateOf(
         SearchProductUiState()
     )
         private set
 
 
-    fun onEvent(events: SearchProductsEvents){
-        when(events) {
+    fun onEvent(events: SearchProductsEvents) {
+        when (events) {
             is SearchProductsEvents.OnQueryChange -> {
                 uiState = uiState.copy(searchQuery = events.query)
             }
@@ -37,11 +39,14 @@ class SearchProductViewModel @Inject constructor(private val searchRepository: S
         uiState = uiState.copy(loadingState = true)
         viewModelScope.launch {
             val result = try {
-            searchRepository.searchProduct(uiState.searchQuery)
-        } catch (e: Exception) {
+                searchRepository.searchProduct(uiState.searchQuery)
+            } catch (e: Exception) {
                 Log.e("TAG", "searchProducts: ", e)
-        }
-            Log.d("sat_tag", "onEvent: buscar ${result}")
+                // TODO: handle error
+                uiState = uiState.copy(loadingState = false)
+                return@launch
+            }
+            uiState = uiState.copy(loadingState = false, productList = result?.results ?: listOf())
         }
 
     }
@@ -50,5 +55,6 @@ class SearchProductViewModel @Inject constructor(private val searchRepository: S
 
 data class SearchProductUiState(
     val searchQuery: String = "",
-    val loadingState: Boolean = false
+    val loadingState: Boolean = false,
+    val productList: List<Product> = listOf()
 )
