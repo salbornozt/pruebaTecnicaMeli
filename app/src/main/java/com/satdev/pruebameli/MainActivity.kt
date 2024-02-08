@@ -14,10 +14,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.satdev.pruebameli.feature_product_detail.presentation.ProductDetailRoute
+import com.satdev.pruebameli.feature_product_detail.presentation.ProductDetailViewModel
 import com.satdev.pruebameli.feature_search_product.presentation.SearchProductRoute
 import com.satdev.pruebameli.feature_search_product.presentation.SearchProductViewModel
 import com.satdev.pruebameli.ui.navigation.Route
 import com.satdev.pruebameli.ui.navigation.Route.HOME
+import com.satdev.pruebameli.ui.navigation.Route.PRODUCT_DETAIL
 import com.satdev.pruebameli.ui.theme.PruebaMeliTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +38,15 @@ class MainActivity : ComponentActivity() {
                         composable(Route.HOME) {
                             val viewModel = hiltViewModel<SearchProductViewModel>()
                             SearchProductRoute(viewModel = viewModel, onShowProductDetail = {
-
+                                it?.let {
+                                    navController.navigate("$PRODUCT_DETAIL/$it")
+                                }
+                            })
+                        }
+                        composable("${PRODUCT_DETAIL}/{productId}"){
+                            val viewModel = hiltViewModel<ProductDetailViewModel>()
+                            ProductDetailRoute(viewModel = viewModel, onBackClicked = {
+                                navController.navigateUp()
                             })
                         }
                     }
