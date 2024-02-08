@@ -10,6 +10,5 @@ import javax.inject.Inject
 class SearchProductDataSourceImpl @Inject constructor(private val apiService: ApiService) : SearchProductDataSource {
     override suspend fun searchProduct(query:String): Response<SearchProductResult?> {
         return apiService.searchProducts(query)
-        //return Response.error(404,"error".toResponseBody())
     }
 }
