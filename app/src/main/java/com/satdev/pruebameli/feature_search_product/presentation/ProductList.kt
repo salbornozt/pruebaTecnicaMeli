@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,26 +42,29 @@ import com.satdev.pruebameli.ui.theme.md_theme_light_outlineVariant
 fun ProductList(
     products: List<Product>,
     modifier: Modifier = Modifier,
-    onProductClick: () -> Unit
+    onProductClick: (String?) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(top = 0.dp, start = 0.dp, end = 0.dp, bottom = 0.dp),
     ) {
         items(products){product ->
-            ProductRow(productRecord = product)
+            ProductRow(productRecord = product, onProductClick = {
+                onProductClick(product.id)
+            })
             Divider(color = Color.Gray)
         }
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductRow(productRecord : Product, modifier: Modifier = Modifier) {
+fun ProductRow(productRecord : Product, modifier: Modifier = Modifier, onProductClick: () -> Unit) {
     val formattedPrice = remember{ formatPrice((productRecord.price) ?: 0L) }
     Card(modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
         containerColor = MaterialTheme.colorScheme.onPrimary,
-    ), shape = RectangleShape
+    ), shape = RectangleShape, onClick = onProductClick
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Image(

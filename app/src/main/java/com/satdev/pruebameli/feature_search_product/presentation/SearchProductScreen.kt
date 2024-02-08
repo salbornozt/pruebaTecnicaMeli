@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -41,9 +42,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SearchProductScreen(
-    uiState: SearchProductUiState,
-    onSearchProduct: () -> Unit,
-    onQuerySearch: (String) -> Unit
+        uiState: SearchProductUiState,
+        onSearchProduct: () -> Unit,
+        onQuerySearch: (String) -> Unit,
+        onProductClick: (String?) -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,42 +57,42 @@ fun SearchProductScreen(
 
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)
+                        .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (uiState.loadingState) {
                 LinearProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = uiState.searchQuery,
-                    onValueChange = onQuerySearch,
-                    singleLine = true,
-                    label = { Text("Buscar") },
-                    trailingIcon = {
-                        IconButton(onClick = onSearchProduct) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Search",
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
-                    }
+                        modifier = Modifier.fillMaxWidth(),
+                        value = uiState.searchQuery,
+                        onValueChange = onQuerySearch,
+                        singleLine = true,
+                        label = { Text("Buscar") },
+                        trailingIcon = {
+                            IconButton(onClick = onSearchProduct) {
+                                Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = "Search",
+                                        modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }, keyboardActions = KeyboardActions {
+                    onSearchProduct()
+                }
                 )
             }
-            ProductList(uiState.productList) {
-
-            }
+            ProductList(uiState.productList, onProductClick = onProductClick)
         }
     }
 
@@ -102,9 +104,9 @@ fun SearchProductScreenPreview() {
     PruebaMeliTheme {
         Surface {
             SearchProductScreen(
-                uiState = SearchProductUiState(),
-                onSearchProduct = {},
-                onQuerySearch = {})
+                    uiState = SearchProductUiState(),
+                    onSearchProduct = {},
+                    onQuerySearch = {}, onProductClick = {})
         }
     }
 }
