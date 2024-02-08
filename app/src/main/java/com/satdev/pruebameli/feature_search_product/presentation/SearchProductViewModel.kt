@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.satdev.pruebameli.core.wrapper.ApiResult
+import com.satdev.pruebameli.core.wrapper.ErrorWrapper
 import com.satdev.pruebameli.feature_search_product.data.model.Product
 import com.satdev.pruebameli.feature_search_product.domain.SearchProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,17 +40,36 @@ class SearchProductViewModel @Inject constructor(private val searchRepository: S
         if (uiState.searchQuery.isEmpty()) return
         uiState = uiState.copy(loadingState = true)
         viewModelScope.launch {
-            val result = try {
-                searchRepository.searchProduct(uiState.searchQuery)
-            } catch (e: Exception) {
-                Log.e("TAG", "searchProducts: ", e)
-                // TODO: handle error
-                uiState = uiState.copy(loadingState = false)
-                return@launch
+            val result = searchRepository.searchProduct(uiState.searchQuery)
+            when(result){
+                is ApiResult.Error -> {
+                    handleErrorResult(result.errorWrapper)
+                }
+                is ApiResult.Success -> {
+                    uiState = uiState.copy(loadingState = false, productList = result?.data?.results ?: listOf())
+                }
             }
-            uiState = uiState.copy(loadingState = false, productList = result?.results ?: listOf())
+
         }
 
+    }
+
+    private fun handleErrorResult(errorWrapper: ErrorWrapper?) {
+        val message :String = when(errorWrapper){
+            ErrorWrapper.ServiceNotAvailable -> {
+                "Ocurrio un error al obtener los resultados, revisa tu conexión a internet"
+            }
+            is ErrorWrapper.ServiceInternalError -> {
+                "ahora mismo no es posible obtener los resultados"
+            }
+            ErrorWrapper.UnknownError -> {
+                "Ocurrio un error inesperado al obtener los resultados"
+            }
+            else -> {
+                "Ocurrio un error inesperado al obtener los resultados"
+            }
+        }
+        uiState = uiState.copy(loadingState = false, errorState = true, errorMessage = message)
     }
 
 }
@@ -56,5 +77,7 @@ class SearchProductViewModel @Inject constructor(private val searchRepository: S
 data class SearchProductUiState(
     val searchQuery: String = "",
     val loadingState: Boolean = false,
-    val productList: List<Product> = listOf()
+    val productList: List<Product> = listOf(),
+    val errorState : Boolean = false,
+    val errorMessage : String? = null
 )

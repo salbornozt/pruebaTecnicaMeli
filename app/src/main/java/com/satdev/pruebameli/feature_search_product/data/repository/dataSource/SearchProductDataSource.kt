@@ -5,5 +5,5 @@ import retrofit2.Response
 
 
 interface SearchProductDataSource {
-    suspend fun searchProduct(query:String) : SearchProductResult?
+    suspend fun searchProduct(query:String) : Response<SearchProductResult?>
 }

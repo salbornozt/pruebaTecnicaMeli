@@ -86,11 +86,13 @@ fun ProductRow(productRecord : Product, modifier: Modifier = Modifier) {
                     Text(
                         text = formattedPrice,
                         style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                     Text(
                         text = productRecord.seller?.nickname?.toString() ?: "",
                         style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
